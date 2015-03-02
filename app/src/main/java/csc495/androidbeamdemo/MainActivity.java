@@ -1,23 +1,21 @@
 package csc495.androidbeamdemo;
 
-import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcAdapter.CreateNdefMessageCallback;
 import android.nfc.NfcEvent;
-import android.os.Build;
-import android.os.Parcelable;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class MainActivity extends ActionBarActivity implements CreateNdefMessageCallback {
+public class MainActivity extends Activity implements CreateNdefMessageCallback {
 
     NfcAdapter nfcAdapter;
     TextView textView;
@@ -77,7 +75,6 @@ public class MainActivity extends ActionBarActivity implements CreateNdefMessage
     public void onResume() {
         super.onResume();
         if(NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
-            Toast.makeText(this, "Received beam", Toast.LENGTH_SHORT).show();
             processIntent(getIntent());
         }
     }
@@ -98,7 +95,6 @@ public class MainActivity extends ActionBarActivity implements CreateNdefMessage
     private void processIntent(Intent intent) {
         Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
         NdefMessage msg = (NdefMessage) rawMsgs[0];
-        textView = (TextView) findViewById(R.id.textView);
         textView.setText(new String(msg.getRecords()[0].getPayload()));
     }
 }
